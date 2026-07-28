@@ -19,6 +19,16 @@ assert.equal(manifest.manifest_version, 3);
 assert.ok(manifest.permissions.includes("storage"));
 assert.ok(manifest.permissions.includes("activeTab"));
 
+const defaultLibrary = JSON.parse(fs.readFileSync(path.join(root, "default-keywords.json"), "utf8"));
+assert.equal(defaultLibrary.format, "keyword-highlighter-default-library");
+assert.equal(defaultLibrary.keywords.length, 42);
+assert.equal(new Set(defaultLibrary.keywords.map((entry) => entry.id)).size, 42);
+assert.equal(new Set(defaultLibrary.keywords.map((entry) => entry.text.toLocaleLowerCase())).size, 42);
+for (const entry of defaultLibrary.keywords) {
+  assert.ok(entry.text.trim(), "默认关键词不能为空");
+  assert.match(entry.color, /^#[0-9a-f]{6}$/i, `默认关键词颜色无效：${entry.text}`);
+}
+
 let source = fs.readFileSync(path.join(root, "content.js"), "utf8");
 source = source.replace(
   /\}\)\(\);\s*$/,

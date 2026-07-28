@@ -1,0 +1,55 @@
+{
+  "format": "keyword-highlighter-default-library",
+  "version": 1,
+  "name": "通用信息阅读词库",
+  "description": "覆盖风险、错误、行动项、状态与技术提醒的入门词库。",
+  "keywords": [
+    { "id": "default-critical", "text": "严重", "color": "#ffb4b4", "enabled": true },
+    { "id": "default-urgent", "text": "紧急", "color": "#ffb4b4", "enabled": true },
+    { "id": "default-high-risk", "text": "高风险", "color": "#ffb4b4", "enabled": true },
+    { "id": "default-data-leak", "text": "数据泄露", "color": "#ffb4b4", "enabled": true },
+    { "id": "default-vulnerability-cn", "text": "安全漏洞", "color": "#ffb4b4", "enabled": true },
+    { "id": "default-forbidden", "text": "禁止", "color": "#ffb4b4", "enabled": true },
+    { "id": "default-critical-en", "text": "CRITICAL", "color": "#ffb4b4", "enabled": true },
+    { "id": "default-vulnerability-en", "text": "VULNERABILITY", "color": "#ffb4b4", "enabled": true },
+
+    { "id": "default-warning", "text": "警告", "color": "#ffd59a", "enabled": true },
+    { "id": "default-risk", "text": "风险", "color": "#ffd59a", "enabled": true },
+    { "id": "default-error", "text": "错误", "color": "#ffd59a", "enabled": true },
+    { "id": "default-failed", "text": "失败", "color": "#ffd59a", "enabled": true },
+    { "id": "default-exception", "text": "异常", "color": "#ffd59a", "enabled": true },
+    { "id": "default-expired", "text": "已过期", "color": "#ffd59a", "enabled": true },
+    { "id": "default-incompatible", "text": "不兼容", "color": "#ffd59a", "enabled": true },
+    { "id": "default-warning-en", "text": "WARNING", "color": "#ffd59a", "enabled": true },
+    { "id": "default-error-en", "text": "ERROR", "color": "#ffd59a", "enabled": true },
+    { "id": "default-failed-en", "text": "FAILED", "color": "#ffd59a", "enabled": true },
+
+    { "id": "default-important", "text": "重要", "color": "#ffff00", "enabled": true },
+    { "id": "default-attention", "text": "注意", "color": "#ffff00", "enabled": true },
+    { "id": "default-must", "text": "必须", "color": "#ffff00", "enabled": true },
+    { "id": "default-deadline", "text": "截止日期", "color": "#ffff00", "enabled": true },
+    { "id": "default-impact", "text": "影响范围", "color": "#ffff00", "enabled": true },
+    { "id": "default-required-en", "text": "REQUIRED", "color": "#ffff00", "enabled": true },
+
+    { "id": "default-todo", "text": "待办", "color": "#bde3ff", "enabled": true },
+    { "id": "default-pending", "text": "待确认", "color": "#bde3ff", "enabled": true },
+    { "id": "default-needs-action", "text": "需要处理", "color": "#bde3ff", "enabled": true },
+    { "id": "default-next-step", "text": "下一步", "color": "#bde3ff", "enabled": true },
+    { "id": "default-owner", "text": "负责人", "color": "#bde3ff", "enabled": true },
+    { "id": "default-todo-en", "text": "TODO", "color": "#bde3ff", "enabled": true },
+    { "id": "default-fixme-en", "text": "FIXME", "color": "#bde3ff", "enabled": true },
+
+    { "id": "default-completed", "text": "已完成", "color": "#b7f0c6", "enabled": true },
+    { "id": "default-success", "text": "成功", "color": "#b7f0c6", "enabled": true },
+    { "id": "default-passed", "text": "通过", "color": "#b7f0c6", "enabled": true },
+    { "id": "default-resolved", "text": "已解决", "color": "#b7f0c6", "enabled": true },
+    { "id": "default-released", "text": "已发布", "color": "#b7f0c6", "enabled": true },
+
+    { "id": "default-change", "text": "变更", "color": "#ddd0ff", "enabled": true },
+    { "id": "default-deprecated", "text": "已废弃", "color": "#ddd0ff", "enabled": true },
+    { "id": "default-recommend", "text": "建议", "color": "#ddd0ff", "enabled": true },
+    { "id": "default-recommended", "text": "推荐", "color": "#ddd0ff", "enabled": true },
+    { "id": "default-breaking-change-en", "text": "BREAKING CHANGE", "color": "#ddd0ff", "enabled": true },
+    { "id": "default-deprecated-en", "text": "DEPRECATED", "color": "#ddd0ff", "enabled": true }
+  ]
+}

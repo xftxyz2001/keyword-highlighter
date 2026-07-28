@@ -30,6 +30,7 @@ const elements = {
   wholeWord: $("#wholeWord"),
   observeChanges: $("#observeChanges"),
   excludedSites: $("#excludedSites"),
+  addDefaults: $("#addDefaults"),
   importButton: $("#importButton"),
   exportJson: $("#exportJson"),
   exportTxt: $("#exportTxt"),
@@ -301,6 +302,32 @@ async function importFile(file) {
   }
 }
 
+async function addDefaultLibrary() {
+  try {
+    const response = await fetch("default-keywords.json");
+    if (!response.ok) throw new Error("无法读取默认词库");
+    const data = await response.json();
+    const defaults = Array.isArray(data.keywords)
+      ? data.keywords.map((entry) => normalizeEntry(entry, settings.defaultColor)).filter(Boolean)
+      : [];
+    if (!defaults.length) throw new Error("默认词库为空");
+
+    const beforeCount = settings.keywords.length;
+    settings.keywords = dedupeEntries(
+      [...settings.keywords, ...defaults],
+      settings.caseSensitive
+    );
+    const addedCount = settings.keywords.length - beforeCount;
+    await saveSettings();
+    renderAll();
+    showToast(addedCount
+      ? `已添加 ${addedCount} 个默认关键词`
+      : "默认关键词均已存在");
+  } catch (error) {
+    showToast(`添加失败：${error.message}`, true);
+  }
+}
+
 elements.addKeywords.addEventListener("click", addKeywords);
 elements.bulkInput.addEventListener("keydown", (event) => {
   if ((event.ctrlKey || event.metaKey) && event.key === "Enter") addKeywords();
@@ -392,6 +419,7 @@ elements.disableAll.addEventListener("click", () => setAllEnabled(false));
 elements.exportJson.addEventListener("click", exportJson);
 elements.exportJsonTop.addEventListener("click", exportJson);
 elements.exportTxt.addEventListener("click", exportTxt);
+elements.addDefaults.addEventListener("click", addDefaultLibrary);
 elements.importButton.addEventListener("click", () => elements.fileInput.click());
 elements.fileInput.addEventListener("change", () => importFile(elements.fileInput.files?.[0]));
 

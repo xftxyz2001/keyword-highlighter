@@ -8,13 +8,27 @@ const DEFAULT_SETTINGS = {
   keywords: []
 };
 
+async function loadDefaultKeywords() {
+  try {
+    const response = await fetch(chrome.runtime.getURL("default-keywords.json"));
+    if (!response.ok) return [];
+    const data = await response.json();
+    return Array.isArray(data.keywords) ? data.keywords : [];
+  } catch {
+    return [];
+  }
+}
+
 chrome.runtime.onInstalled.addListener(async () => {
   const { settings } = await chrome.storage.local.get("settings");
+  const initialKeywords = settings
+    ? (Array.isArray(settings.keywords) ? settings.keywords : [])
+    : await loadDefaultKeywords();
   await chrome.storage.local.set({
     settings: {
       ...DEFAULT_SETTINGS,
       ...(settings || {}),
-      keywords: Array.isArray(settings?.keywords) ? settings.keywords : []
+      keywords: initialKeywords
     }
   });
 
