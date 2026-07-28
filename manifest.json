@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "关键词高亮助手",
+  "version": "1.0.0",
+  "description": "在网页中自动高亮词库关键词，支持自定义颜色、导入导出与匹配设置。",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "action": {
+    "default_title": "关键词高亮助手",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  }
+}

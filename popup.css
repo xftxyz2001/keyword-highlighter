@@ -1,0 +1,155 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  color: #172033;
+  background: #f6f7fb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 390px;
+  background:
+    radial-gradient(circle at 90% -10%, rgba(99, 102, 241, 0.18), transparent 42%),
+    #f7f8fc;
+}
+
+button, input { font: inherit; }
+button { cursor: pointer; }
+
+.popup-shell { padding: 18px; }
+
+.topbar {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 11px;
+  align-items: center;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #4f46e5, #7c3aed);
+  color: white;
+  font-size: 21px;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.23);
+}
+
+.brand-copy h1 { margin: 0; font-size: 16px; line-height: 1.35; }
+.brand-copy p { margin: 3px 0 0; color: #697386; font-size: 11px; }
+
+.switch { position: relative; width: 42px; height: 24px; }
+.switch input { position: absolute; opacity: 0; }
+.switch-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 99px;
+  background: #c9ceda;
+  transition: 0.2s ease;
+}
+.switch-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+  transition: 0.2s ease;
+}
+.switch input:checked + .switch-track { background: #4f46e5; }
+.switch input:checked + .switch-track::after { transform: translateX(18px); }
+.switch input:focus-visible + .switch-track { outline: 3px solid rgba(79, 70, 229, 0.25); }
+
+.count-card {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin: 18px 0 14px;
+  padding: 17px 18px;
+  border: 1px solid #e7e9f1;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 30px rgba(34, 41, 66, 0.06);
+}
+
+.eyebrow { display: block; margin-bottom: 2px; color: #737d91; font-size: 11px; }
+#highlightCount { color: #332dba; font-size: 31px; letter-spacing: -1px; }
+.count-label { color: #576176; font-size: 12px; }
+.keyword-count {
+  padding: 5px 9px;
+  border-radius: 99px;
+  background: #eeedff;
+  color: #5047c8;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.quick-add, .recent-section {
+  padding: 15px;
+  border: 1px solid #e7e9f1;
+  border-radius: 15px;
+  background: #fff;
+}
+
+.quick-add label, .section-title { font-size: 12px; font-weight: 700; }
+.input-row { display: grid; grid-template-columns: 1fr 38px auto; gap: 8px; margin-top: 9px; }
+.input-row input[type="text"] {
+  min-width: 0;
+  height: 38px;
+  border: 1px solid #d9ddea;
+  border-radius: 10px;
+  padding: 0 11px;
+  outline: none;
+}
+.input-row input[type="text"]:focus { border-color: #665ee8; box-shadow: 0 0 0 3px rgba(99, 91, 230, 0.12); }
+.color-input {
+  width: 38px;
+  height: 38px;
+  padding: 4px;
+  border: 1px solid #d9ddea;
+  border-radius: 10px;
+  background: white;
+}
+.input-row button {
+  border: 0;
+  border-radius: 10px;
+  padding: 0 14px;
+  background: #edeffe;
+  color: #443dcc;
+  font-weight: 700;
+}
+.form-message { min-height: 14px; margin: 6px 0 -3px; color: #697386; font-size: 11px; }
+.form-message.error { color: #c23b3b; }
+
+.recent-section { margin-top: 10px; }
+.section-title { display: flex; align-items: center; justify-content: space-between; }
+.text-button { padding: 0; border: 0; background: transparent; color: #544cd3; font-size: 11px; }
+.recent-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; min-height: 27px; }
+.keyword-chip {
+  max-width: 150px;
+  overflow: hidden;
+  padding: 5px 9px;
+  border: 1px solid rgba(20, 27, 45, 0.09);
+  border-radius: 8px;
+  color: #273044;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.empty-state { color: #8a93a4; font-size: 11px; }
+
+footer { display: grid; grid-template-columns: 1fr 1.25fr; gap: 9px; margin-top: 14px; }
+footer button { min-height: 39px; border-radius: 11px; font-size: 12px; font-weight: 700; }
+.secondary-button { border: 1px solid #dcdfea; background: white; color: #515b70; }
+.primary-button { border: 0; background: #4f46e5; color: white; box-shadow: 0 7px 16px rgba(79, 70, 229, 0.2); }
+button:hover { filter: brightness(0.98); }
+button:active { transform: translateY(1px); }
+button:disabled { cursor: not-allowed; opacity: 0.55; }

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>关键词高亮助手</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="popup-shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">H</div>
+      <div class="brand-copy">
+        <h1>关键词高亮</h1>
+        <p id="pageStatus">正在读取当前页面…</p>
+      </div>
+      <label class="switch" title="启用或暂停全部高亮">
+        <input id="enabledToggle" type="checkbox">
+        <span class="switch-track"></span>
+      </label>
+    </header>
+
+    <section class="count-card" aria-live="polite">
+      <div>
+        <span class="eyebrow">当前页面</span>
+        <strong id="highlightCount">—</strong>
+        <span class="count-label">处高亮</span>
+      </div>
+      <span id="keywordCount" class="keyword-count">0 个启用词</span>
+    </section>
+
+    <form id="quickAddForm" class="quick-add">
+      <label for="keywordInput">快速添加关键词</label>
+      <div class="input-row">
+        <input id="keywordInput" type="text" maxlength="120" placeholder="输入关键词" autocomplete="off" required>
+        <input id="colorInput" class="color-input" type="color" value="#ffff00" title="高亮颜色" aria-label="高亮颜色">
+        <button type="submit">添加</button>
+      </div>
+      <p id="formMessage" class="form-message" role="status"></p>
+    </form>
+
+    <section class="recent-section">
+      <div class="section-title">
+        <span>最近关键词</span>
+        <button id="openOptionsLink" class="text-button" type="button">管理词库</button>
+      </div>
+      <div id="recentKeywords" class="recent-list"></div>
+    </section>
+
+    <footer>
+      <button id="siteToggle" class="secondary-button" type="button">在此网站暂停</button>
+      <button id="openOptions" class="primary-button" type="button">打开完整设置</button>
+    </footer>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>关键词高亮助手 · 设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-content">
+      <div class="brand-mark" aria-hidden="true">H</div>
+      <div>
+        <h1>关键词高亮助手</h1>
+        <p>管理你的高亮词库和网页匹配偏好</p>
+      </div>
+      <div id="saveStatus" class="save-status" role="status">设置已保存</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <nav aria-label="设置导航">
+        <a href="#dictionary" class="active">词库管理</a>
+        <a href="#matching">匹配设置</a>
+        <a href="#sites">网站排除</a>
+        <a href="#data">导入与导出</a>
+      </nav>
+      <div class="sidebar-tip">
+        <span>数据说明</span>
+        <p>词库与设置只保存在当前浏览器本地，不会上传。</p>
+      </div>
+    </aside>
+
+    <div class="content">
+      <section class="hero">
+        <div>
+          <span class="eyebrow">你的词库</span>
+          <h2><strong id="totalCount">0</strong> 个关键词</h2>
+          <p>添加后会自动应用到所有已打开的普通网页。</p>
+        </div>
+        <label class="master-toggle">
+          <span>
+            <strong>启用高亮</strong>
+            <small>一键暂停或恢复全部页面</small>
+          </span>
+          <input id="enabledToggle" type="checkbox">
+          <i></i>
+        </label>
+      </section>
+
+      <section id="dictionary" class="panel">
+        <div class="panel-heading">
+          <div>
+            <h2>词库管理</h2>
+            <p>每行输入一个关键词，可为每个词指定不同颜色。</p>
+          </div>
+          <div class="heading-actions">
+            <button id="exportJsonTop" class="button secondary" type="button">导出词库</button>
+          </div>
+        </div>
+
+        <div class="add-card">
+          <textarea id="bulkInput" rows="3" placeholder="输入关键词，每行一个&#10;例如：重要&#10;需要关注"></textarea>
+          <div class="add-actions">
+            <label class="color-field">
+              <span>新词颜色</span>
+              <input id="newKeywordColor" type="color" value="#ffff00">
+              <code id="newColorCode">#ffff00</code>
+            </label>
+            <button id="addKeywords" class="button primary" type="button">添加到词库</button>
+          </div>
+        </div>
+
+        <div class="dictionary-toolbar">
+          <label class="search-box">
+            <span aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" placeholder="搜索关键词">
+          </label>
+          <div class="toolbar-meta">
+            <span id="visibleCount">显示 0 项</span>
+            <button id="enableAll" class="text-button" type="button">全部启用</button>
+            <button id="disableAll" class="text-button" type="button">全部停用</button>
+          </div>
+        </div>
+
+        <div class="table-shell">
+          <div class="table-head">
+            <span>启用</span><span>关键词</span><span>颜色</span><span>操作</span>
+          </div>
+          <div id="keywordList" class="keyword-list"></div>
+          <div id="emptyState" class="empty-state" hidden>
+            <div>H</div>
+            <h3>还没有关键词</h3>
+            <p>在上方输入关键词，或从已有文件导入词库。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="matching" class="panel settings-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>匹配设置</h2>
+            <p>这些规则会应用于整个词库。</p>
+          </div>
+        </div>
+        <div class="setting-list">
+          <label class="setting-row">
+            <span><strong>默认高亮颜色</strong><small>添加新词时自动使用此颜色</small></span>
+            <span class="color-control">
+              <input id="defaultColor" type="color" value="#ffff00">
+              <code id="defaultColorCode">#ffff00</code>
+            </span>
+          </label>
+          <label class="setting-row">
+            <span><strong>区分大小写</strong><small>开启后，OpenAI 与 openai 将视为不同关键词</small></span>
+            <input id="caseSensitive" class="check-toggle" type="checkbox">
+          </label>
+          <label class="setting-row">
+            <span><strong>仅匹配完整单词</strong><small>避免关键词成为较长英文单词的一部分</small></span>
+            <input id="wholeWord" class="check-toggle" type="checkbox">
+          </label>
+          <label class="setting-row">
+            <span><strong>高亮动态内容</strong><small>自动处理滚动加载、单页应用和异步更新的文字</small></span>
+            <input id="observeChanges" class="check-toggle" type="checkbox">
+          </label>
+        </div>
+      </section>
+
+      <section id="sites" class="panel settings-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>网站排除</h2>
+            <p>每行一个域名或通配规则，这些网页不会执行高亮。</p>
+          </div>
+        </div>
+        <label class="block-label" for="excludedSites">排除列表</label>
+        <textarea id="excludedSites" rows="5" placeholder="example.com&#10;*.internal.example.com/*"></textarea>
+        <p class="field-help">域名会同时匹配其子域名；也可以使用 * 作为通配符。</p>
+      </section>
+
+      <section id="data" class="panel settings-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>导入与导出</h2>
+            <p>JSON 可完整备份颜色和设置，TXT 适合编辑纯词表。</p>
+          </div>
+        </div>
+        <div class="data-actions">
+          <button id="importButton" class="button primary" type="button">导入 JSON / TXT</button>
+          <button id="exportJson" class="button secondary" type="button">导出 JSON</button>
+          <button id="exportTxt" class="button secondary" type="button">导出 TXT</button>
+          <input id="fileInput" type="file" accept=".json,.txt,application/json,text/plain" hidden>
+        </div>
+        <div class="danger-zone">
+          <span><strong>清空词库</strong><small>删除所有关键词，其他匹配设置会保留。</small></span>
+          <button id="clearAll" class="button danger" type="button">清空全部</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="options.js"></script>
+</body>
+</html>

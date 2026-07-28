@@ -1,0 +1,12 @@
+.kw-highlighter__mark {
+  background: var(--kw-highlight-color, #ffff00) !important;
+  border-radius: 0.18em !important;
+  box-decoration-break: clone !important;
+  -webkit-box-decoration-break: clone !important;
+  color: inherit !important;
+  margin: 0 !important;
+  outline: 1px solid color-mix(in srgb, var(--kw-highlight-color, #ffff00) 72%, #0000) !important;
+  padding: 0.04em 0.08em !important;
+  text-decoration: inherit !important;
+  text-shadow: none !important;
+}
