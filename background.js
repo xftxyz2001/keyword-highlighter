@@ -5,6 +5,7 @@ const DEFAULT_SETTINGS = {
   wholeWord: false,
   observeChanges: true,
   excludedSites: [],
+  siteLibraries: [],
   keywords: []
 };
 
@@ -28,6 +29,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     settings: {
       ...DEFAULT_SETTINGS,
       ...(settings || {}),
+      siteLibraries: Array.isArray(settings?.siteLibraries) ? settings.siteLibraries : [],
       keywords: initialKeywords
     }
   });

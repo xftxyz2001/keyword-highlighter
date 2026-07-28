@@ -30,7 +30,15 @@
     </section>
 
     <form id="quickAddForm" class="quick-add">
-      <label for="keywordInput">快速添加关键词</label>
+      <div class="quick-add-heading">
+        <label for="keywordInput">快速添加关键词</label>
+        <label class="target-library">
+          <span>保存到</span>
+          <select id="targetLibrary" aria-label="目标词库">
+            <option value="global">全局词库</option>
+          </select>
+        </label>
+      </div>
       <div class="input-row">
         <input id="keywordInput" type="text" maxlength="120" placeholder="输入关键词" autocomplete="off" required>
         <input id="colorInput" class="color-input" type="color" value="#ffff00" title="高亮颜色" aria-label="高亮颜色">

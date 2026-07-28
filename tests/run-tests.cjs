@@ -16,6 +16,7 @@ for (const relativePath of referencedFiles) {
   assert.ok(fs.existsSync(path.join(root, relativePath)), `清单引用的文件不存在：${relativePath}`);
 }
 assert.equal(manifest.manifest_version, 3);
+assert.equal(manifest.version, "1.2.0");
 assert.ok(manifest.permissions.includes("storage"));
 assert.ok(manifest.permissions.includes("activeTab"));
 
@@ -37,6 +38,7 @@ source = source.replace(
     wildcardToRegExp,
     createMatcher,
     getEnabledKeywords,
+    getApplicableSiteLibraries,
     isCurrentSiteExcluded,
     setSettings(value) { settings = normalizeSettings(value); }
   };})();`
@@ -105,4 +107,38 @@ api.setSettings({ excludedSites: ["example.org"] });
 assert.equal(api.isCurrentSiteExcluded(), false);
 
 assert.equal(api.escapeRegExp("a.b+c?"), "a\\.b\\+c\\?");
+
+api.setSettings({
+  defaultColor: "#ffff00",
+  keywords: [
+    { text: "共享词", color: "#ffff00", enabled: true },
+    { text: "全局词", color: "#ffff00", enabled: true }
+  ],
+  siteLibraries: [
+    {
+      id: "docs-library",
+      name: "文档站词库",
+      enabled: true,
+      patterns: ["docs.example.com"],
+      keywords: [
+        { text: "共享词", color: "#ff0000", enabled: true },
+        { text: "站点词", color: "#bde3ff", enabled: true }
+      ]
+    },
+    {
+      id: "other-library",
+      name: "其他站点词库",
+      enabled: true,
+      patterns: ["other.example.com"],
+      keywords: [{ text: "不可见词", color: "#ff0000", enabled: true }]
+    }
+  ]
+});
+assert.deepEqual(
+  Array.from(api.getApplicableSiteLibraries(), (library) => library.id),
+  ["docs-library"]
+);
+entries = api.getEnabledKeywords();
+assert.deepEqual(Array.from(entries, (entry) => entry.text), ["共享词", "站点词", "全局词"]);
+assert.equal(entries[0].color, "#ff0000", "网站词库应覆盖同名全局词的颜色");
 console.log("All keyword highlighter tests passed.");

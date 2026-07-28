@@ -100,6 +100,20 @@ button { cursor: pointer; }
 }
 
 .quick-add label, .section-title { font-size: 12px; font-weight: 700; }
+.quick-add-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.target-library { display: flex; align-items: center; gap: 5px; color: #7a8395; }
+.target-library span { font-size: 9px; font-weight: 500; }
+.target-library select {
+  max-width: 125px;
+  height: 26px;
+  border: 1px solid #d9ddea;
+  border-radius: 7px;
+  padding: 0 7px;
+  background: #fff;
+  color: #4d5669;
+  font-size: 10px;
+  outline: none;
+}
 .input-row { display: grid; grid-template-columns: 1fr 38px auto; gap: 8px; margin-top: 9px; }
 .input-row input[type="text"] {
   min-width: 0;

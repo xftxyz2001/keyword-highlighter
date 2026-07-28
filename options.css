@@ -127,8 +127,52 @@ button { cursor: pointer; }
 .button.primary { border: 1px solid #4f46e5; background: #4f46e5; color: white; box-shadow: 0 6px 15px rgba(79, 70, 229, 0.18); }
 .button.secondary { border: 1px solid #dfe2eb; background: white; color: #505a6f; }
 .button.danger { border: 1px solid #efc9c9; background: #fff; color: #c34343; }
+.button.compact { min-height: 34px; padding: 0 11px; }
 .button:hover { filter: brightness(0.98); }
 .button:active { transform: translateY(1px); }
+
+.library-bar {
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 13px 14px;
+  border: 1px solid #e2e5ee;
+  border-radius: 13px;
+  background: #fafafe;
+}
+.library-picker { display: grid; gap: 5px; min-width: 210px; }
+.library-picker > span, .site-library-config label > span { color: #687286; font-size: 10px; font-weight: 700; }
+.library-picker select {
+  height: 35px;
+  border: 1px solid #d9ddea;
+  border-radius: 9px;
+  padding: 0 32px 0 10px;
+  background: #fff;
+  color: #30384a;
+  font-size: 12px;
+  outline: none;
+}
+.library-picker select:focus { border-color: #6961e5; box-shadow: 0 0 0 3px rgba(99, 91, 230, 0.1); }
+.library-scope { flex: 1; align-self: center; color: #7e8798; font-size: 10px; }
+.site-library-config {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.7fr) minmax(280px, 1.3fr) auto;
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid #dcd9fa;
+  border-radius: 13px;
+  background: #f8f7ff;
+}
+.site-library-config[hidden] { display: none; }
+.site-library-config label { display: grid; gap: 6px; }
+.site-library-config input[type="text"] { height: 37px; border: 1px solid #dfe2eb; border-radius: 9px; padding: 0 10px; background: #fff; font-size: 12px; }
+.site-library-config textarea { min-height: 72px; }
+.site-library-config small { color: #858da0; font-size: 9px; }
+.site-library-enabled { grid-template-columns: auto 1fr !important; align-items: center; padding-top: 22px; white-space: nowrap; }
+.site-library-enabled input { width: 17px; height: 17px; accent-color: #4f46e5; }
 
 .add-card { display: grid; grid-template-columns: 1fr 205px; gap: 14px; padding: 14px; border: 1px solid #e2e5ee; border-radius: 14px; background: #f8f9fc; }
 textarea, input[type="text"], input[type="search"] { outline: none; }

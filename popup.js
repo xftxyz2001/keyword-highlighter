@@ -5,6 +5,7 @@ const DEFAULT_SETTINGS = {
   wholeWord: false,
   observeChanges: true,
   excludedSites: [],
+  siteLibraries: [],
   keywords: []
 };
 
@@ -16,6 +17,7 @@ const elements = {
   quickAddForm: document.querySelector("#quickAddForm"),
   keywordInput: document.querySelector("#keywordInput"),
   colorInput: document.querySelector("#colorInput"),
+  targetLibrary: document.querySelector("#targetLibrary"),
   formMessage: document.querySelector("#formMessage"),
   recentKeywords: document.querySelector("#recentKeywords"),
   siteToggle: document.querySelector("#siteToggle"),
@@ -33,6 +35,7 @@ function normalizeSettings(value) {
     ...DEFAULT_SETTINGS,
     ...(value || {}),
     excludedSites: Array.isArray(value?.excludedSites) ? value.excludedSites : [],
+    siteLibraries: Array.isArray(value?.siteLibraries) ? value.siteLibraries : [],
     keywords: Array.isArray(value?.keywords) ? value.keywords : []
   };
 }
@@ -73,6 +76,53 @@ function hostIsExcluded(hostname) {
   return settings.excludedSites.some((pattern) => patternMatchesSite(pattern, hostname));
 }
 
+function getApplicableSiteLibraries() {
+  return settings.siteLibraries.filter((library) =>
+    library?.enabled !== false
+    && Array.isArray(library.patterns)
+    && library.patterns.some((pattern) => patternMatchesSite(pattern))
+  );
+}
+
+function getEffectiveKeywords() {
+  const unique = new Map();
+  const siteKeywords = getApplicableSiteLibraries().flatMap((library) =>
+    Array.isArray(library.keywords) ? library.keywords : []
+  );
+  for (const entry of [...siteKeywords, ...settings.keywords]) {
+    const text = String(entry?.text || entry || "").trim();
+    if (!text || entry?.enabled === false) continue;
+    const key = settings.caseSensitive ? text : text.toLocaleLowerCase();
+    if (!unique.has(key)) unique.set(key, entry);
+  }
+  return [...unique.values()];
+}
+
+function getTargetKeywords() {
+  if (elements.targetLibrary.value === "global") return settings.keywords;
+  return settings.siteLibraries.find((library) => library.id === elements.targetLibrary.value)?.keywords
+    || settings.keywords;
+}
+
+function renderTargetLibraries() {
+  const selectedId = elements.targetLibrary.value || "global";
+  elements.targetLibrary.replaceChildren();
+  const globalOption = document.createElement("option");
+  globalOption.value = "global";
+  globalOption.textContent = "全局词库";
+  elements.targetLibrary.append(globalOption);
+
+  for (const library of getApplicableSiteLibraries()) {
+    const option = document.createElement("option");
+    option.value = library.id;
+    option.textContent = library.name;
+    elements.targetLibrary.append(option);
+  }
+  elements.targetLibrary.value = [...elements.targetLibrary.options].some((option) => option.value === selectedId)
+    ? selectedId
+    : "global";
+}
+
 async function saveSettings() {
   await chrome.storage.local.set({ settings });
 }
@@ -83,7 +133,8 @@ function render() {
     ? settings.defaultColor
     : "#ffff00";
 
-  const enabledKeywords = settings.keywords.filter((entry) => entry?.enabled !== false && String(entry?.text || entry).trim());
+  renderTargetLibraries();
+  const enabledKeywords = getEffectiveKeywords();
   elements.keywordCount.textContent = `${enabledKeywords.length} 个启用词`;
   elements.recentKeywords.replaceChildren();
 
@@ -139,7 +190,11 @@ async function readActiveTabStats() {
   try {
     const response = await chrome.tabs.sendMessage(tab.id, { type: "GET_HIGHLIGHT_STATS" });
     elements.highlightCount.textContent = String(response?.count ?? 0);
-    elements.pageStatus.textContent = response?.excluded ? "此网站已暂停" : "已连接当前页面";
+    elements.pageStatus.textContent = response?.excluded
+      ? "此网站已暂停"
+      : (response?.siteLibraries?.length
+          ? `全局 + ${response.siteLibraries.join("、")}`
+          : "当前使用全局词库");
   } catch {
     elements.highlightCount.textContent = "—";
     elements.pageStatus.textContent = "刷新页面后即可启用";
@@ -159,7 +214,8 @@ elements.quickAddForm.addEventListener("submit", async (event) => {
   if (!text) return;
 
   const comparisonText = settings.caseSensitive ? text : text.toLocaleLowerCase();
-  const exists = settings.keywords.some((entry) => {
+  const targetKeywords = getTargetKeywords();
+  const exists = targetKeywords.some((entry) => {
     const current = String(entry?.text || entry).trim();
     return (settings.caseSensitive ? current : current.toLocaleLowerCase()) === comparisonText;
   });
@@ -169,7 +225,7 @@ elements.quickAddForm.addEventListener("submit", async (event) => {
     return;
   }
 
-  settings.keywords.push({
+  targetKeywords.push({
     id: createId(),
     text,
     color: elements.colorInput.value,

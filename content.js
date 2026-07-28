@@ -14,6 +14,7 @@
     wholeWord: false,
     observeChanges: true,
     excludedSites: [],
+    siteLibraries: [],
     keywords: []
   };
 
@@ -27,6 +28,7 @@
       ...DEFAULT_SETTINGS,
       ...(value || {}),
       excludedSites: Array.isArray(value?.excludedSites) ? value.excludedSites : [],
+      siteLibraries: Array.isArray(value?.siteLibraries) ? value.siteLibraries : [],
       keywords: Array.isArray(value?.keywords) ? value.keywords : []
     };
   }
@@ -44,31 +46,45 @@
     return new RegExp(`^${escaped}$`, "i");
   }
 
-  function isCurrentSiteExcluded() {
+  function patternMatchesCurrentLocation(rawPattern) {
     const href = location.href.toLowerCase();
     const hostname = location.hostname.toLowerCase();
     const hostAndPath = `${location.host}${location.pathname}${location.search}${location.hash}`.toLowerCase();
 
-    return settings.excludedSites.some((rawPattern) => {
-      const pattern = String(rawPattern || "").trim().toLowerCase();
-      if (!pattern) return false;
-      if (pattern.includes("://") || pattern.includes("/") || pattern.includes("*")) {
-        try {
-          const matcher = wildcardToRegExp(pattern);
-          return matcher.test(href) || matcher.test(hostname) || matcher.test(hostAndPath);
-        } catch {
-          return false;
-        }
+    const pattern = String(rawPattern || "").trim().toLowerCase();
+    if (!pattern) return false;
+    if (pattern.includes("://") || pattern.includes("/") || pattern.includes("*")) {
+      try {
+        const matcher = wildcardToRegExp(pattern);
+        return matcher.test(href) || matcher.test(hostname) || matcher.test(hostAndPath);
+      } catch {
+        return false;
       }
-      return hostname === pattern || hostname.endsWith(`.${pattern}`);
-    });
+    }
+    return hostname === pattern || hostname.endsWith(`.${pattern}`);
+  }
+
+  function isCurrentSiteExcluded() {
+    return settings.excludedSites.some(patternMatchesCurrentLocation);
+  }
+
+  function getApplicableSiteLibraries() {
+    return settings.siteLibraries.filter((library) =>
+      library?.enabled !== false
+      && Array.isArray(library.patterns)
+      && library.patterns.some(patternMatchesCurrentLocation)
+    );
   }
 
   function getEnabledKeywords() {
     const unique = new Map();
     const defaultColor = validColor(settings.defaultColor, "#ffff00");
+    const siteKeywords = getApplicableSiteLibraries().flatMap((library) =>
+      Array.isArray(library.keywords) ? library.keywords : []
+    );
 
-    for (const entry of settings.keywords) {
+    // 网站词库在前，因此启用的同名词可覆盖全局词库的颜色。
+    for (const entry of [...siteKeywords, ...settings.keywords]) {
       const text = typeof entry === "string" ? entry.trim() : String(entry?.text || "").trim();
       const enabled = typeof entry === "string" ? true : entry?.enabled !== false;
       if (!text || !enabled) continue;
@@ -214,7 +230,11 @@
 
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message?.type === "GET_HIGHLIGHT_STATS") {
-      sendResponse({ count: highlightCount, excluded: isCurrentSiteExcluded() });
+      sendResponse({
+        count: highlightCount,
+        excluded: isCurrentSiteExcluded(),
+        siteLibraries: getApplicableSiteLibraries().map((library) => library.name)
+      });
       return;
     }
     if (message?.type === "REFRESH_HIGHLIGHTS") {

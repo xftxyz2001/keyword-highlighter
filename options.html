@@ -53,11 +53,39 @@
         <div class="panel-heading">
           <div>
             <h2>词库管理</h2>
-            <p>每行输入一个关键词，可为每个词指定不同颜色。</p>
+            <p>全局词库作用于所有网站，网站词库只在匹配的网站生效。</p>
           </div>
           <div class="heading-actions">
             <button id="exportJsonTop" class="button secondary" type="button">导出词库</button>
           </div>
+        </div>
+
+        <div class="library-bar">
+          <label class="library-picker">
+            <span>当前词库</span>
+            <select id="librarySelect" aria-label="选择词库">
+              <option value="global">全局词库</option>
+            </select>
+          </label>
+          <span id="libraryScope" class="library-scope">应用于所有网站</span>
+          <button id="newSiteLibrary" class="button secondary" type="button">新建网站词库</button>
+          <button id="deleteSiteLibrary" class="button danger compact" type="button" hidden>删除词库</button>
+        </div>
+
+        <div id="siteLibraryConfig" class="site-library-config" hidden>
+          <label>
+            <span>词库名称</span>
+            <input id="siteLibraryName" type="text" maxlength="40" placeholder="例如：公司内网">
+          </label>
+          <label class="site-patterns-field">
+            <span>适用网站</span>
+            <textarea id="siteLibraryPatterns" rows="3" placeholder="每行一个域名或通配规则&#10;example.com&#10;*.internal.example.com/*"></textarea>
+            <small>域名会匹配其子域名；可以使用 * 匹配路径或子域名。</small>
+          </label>
+          <label class="site-library-enabled">
+            <input id="siteLibraryEnabled" type="checkbox" checked>
+            <span>启用此网站词库</span>
+          </label>
         </div>
 
         <div class="add-card">
@@ -143,19 +171,19 @@
         <div class="panel-heading">
           <div>
             <h2>导入与导出</h2>
-            <p>JSON 可完整备份颜色和设置，TXT 适合编辑纯词表。</p>
+            <p>JSON 完整备份全部词库和规则；普通词表会导入当前选择的词库。</p>
           </div>
         </div>
         <div class="data-actions">
-          <button id="addDefaults" class="button secondary" type="button">添加默认词库</button>
+          <button id="addDefaults" class="button secondary" type="button">补充默认全局词库</button>
           <button id="importButton" class="button primary" type="button">导入 JSON / TXT</button>
           <button id="exportJson" class="button secondary" type="button">导出 JSON</button>
           <button id="exportTxt" class="button secondary" type="button">导出 TXT</button>
           <input id="fileInput" type="file" accept=".json,.txt,application/json,text/plain" hidden>
         </div>
         <div class="danger-zone">
-          <span><strong>清空词库</strong><small>删除所有关键词，其他匹配设置会保留。</small></span>
-          <button id="clearAll" class="button danger" type="button">清空全部</button>
+          <span><strong>清空当前词库</strong><small>只删除当前选择词库中的关键词，其他词库和设置会保留。</small></span>
+          <button id="clearAll" class="button danger" type="button">清空当前词库</button>
         </div>
       </section>
     </div>
