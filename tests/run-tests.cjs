@@ -16,9 +16,17 @@ for (const relativePath of referencedFiles) {
   assert.ok(fs.existsSync(path.join(root, relativePath)), `清单引用的文件不存在：${relativePath}`);
 }
 assert.equal(manifest.manifest_version, 3);
-assert.equal(manifest.version, "1.2.0");
+assert.equal(manifest.version, "1.2.1");
 assert.ok(manifest.permissions.includes("storage"));
 assert.ok(manifest.permissions.includes("activeTab"));
+assert.ok(
+  manifest.content_scripts.every((item) => item.all_frames === true),
+  "内容脚本应注入所有子框架"
+);
+assert.ok(
+  manifest.content_scripts.every((item) => item.match_origin_as_fallback === true),
+  "内容脚本应注入由匹配页面创建的相关框架"
+);
 
 const defaultLibrary = JSON.parse(fs.readFileSync(path.join(root, "default-keywords.json"), "utf8"));
 assert.equal(defaultLibrary.format, "keyword-highlighter-default-library");

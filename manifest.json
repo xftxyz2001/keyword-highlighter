@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "关键词高亮助手",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "在网页中自动高亮词库关键词，支持自定义颜色、导入导出与匹配设置。",
   "permissions": [
     "activeTab",
@@ -25,7 +25,9 @@
       "css": [
         "content.css"
       ],
-      "run_at": "document_idle"
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_origin_as_fallback": true
     }
   ],
   "options_ui": {
